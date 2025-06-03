@@ -58,6 +58,11 @@ export class AuthService {
   }
 
   async register(email: string, password: string): Promise<void> {
+    const existingUser = await this.userRepository.findOneBy({ email });
+    if (existingUser) {
+      throw new Error('Пользователь уже существует');
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = this.userRepository.create({ email, password: hashedPassword });
     await this.userRepository.save(newUser);

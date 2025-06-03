@@ -19,7 +19,6 @@ export class KeyService {
 
   private loadKeys(): void {
     
-
     // Проверяем, существуют ли директория и файлы ключей
     if (!fs.existsSync(this.keyDir)) {
       fs.mkdirSync(this.keyDir, { recursive: true }); // создаем директорию, если её нет

@@ -7,6 +7,8 @@ import { KeyController } from './key/key.controller';
 import { AuthController } from './auth/auth.controller';
 import { KeyService } from './key/key.service';
 import { AuthService } from './auth/auth.service';
+import { UserRepository } from './user/user.repository';
+import { UserController } from './user/user.controller';
 
 @Module({
   imports: [  
@@ -20,7 +22,7 @@ import { AuthService } from './auth/auth.service';
     // AuthModule,
     // KeyModule
   ],
-  controllers: [KeyController, AuthController],//
-  providers: [KeyService, AuthService],//
+  controllers: [KeyController, AuthController, UserController],//
+  providers: [KeyService, AuthService, UserRepository],//
 })
 export class AppModule {}

@@ -24,10 +24,10 @@ export class AuthController {
         throw new Error('Ошибка расшифровки');
       }
 
-      const existingUser = await this.userRepository.findOneBy({ email: decryptedEmail });
-      if (existingUser) {
-        throw new Error('Пользователь уже существует');
-      }
+      // const existingUser = await this.userRepository.findOneBy({ email: decryptedEmail });
+      // if (existingUser) {
+      //   throw new Error('Пользователь уже существует');
+      // }
 
       await this.authService.register(decryptedEmail, decryptedPassword);
       return { message: 'Регистрация успешна' };
