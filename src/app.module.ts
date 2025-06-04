@@ -3,10 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { AuthModule } from './auth/auth.module';
 import { KeyModule } from './key/key.module';
-import { KeyController } from './key/key.controller';
-import { AuthController } from './auth/auth.controller';
-import { KeyService } from './key/key.service';
-import { AuthService } from './auth/auth.service';
 import { UserRepository } from './user/user.repository';
 import { UserController } from './user/user.controller';
 
@@ -19,10 +15,10 @@ import { UserController } from './user/user.controller';
       synchronize: true
     }),
     TypeOrmModule.forFeature([User]),
-    // AuthModule,
-    // KeyModule
+    AuthModule,
+    KeyModule
   ],
-  controllers: [KeyController, AuthController, UserController],//
-  providers: [KeyService, AuthService, UserRepository],//
+  controllers: [UserController],// , AuthController, 
+  providers: [UserRepository],//KeyService, AuthService, , JwtStrategy
 })
 export class AppModule {}
