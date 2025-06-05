@@ -27,7 +27,7 @@ export class KeyService {
     try {
       // Генерация ключей, если они отсутствуют
       if (!fs.existsSync(this.publicKeyPath) || !fs.existsSync(this.privateKeyPath)) {
-        this.generateKeys(this.publicKeyPath, this.privateKeyPath);
+        this.generateKeys();
       }
 
       // Чтение ключей из файлов
@@ -40,7 +40,7 @@ export class KeyService {
     }
   }
 
-  private generateKeys(publicKeyPath: string, privateKeyPath: string): void {
+  private generateKeys(): void {
     const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
       modulusLength: 2048,
       publicKeyEncoding: {
@@ -54,8 +54,8 @@ export class KeyService {
     });
 
     // Запись ключей в файлы
-    fs.writeFileSync(publicKeyPath, publicKey);
-    fs.writeFileSync(privateKeyPath, privateKey);
+    fs.writeFileSync(this.publicKeyPath, publicKey);
+    fs.writeFileSync(this.privateKeyPath, privateKey);
     console.log('Новые ключи сгенерированы и сохранены.');
   }
 

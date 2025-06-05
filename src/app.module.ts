@@ -5,6 +5,10 @@ import { AuthModule } from './auth/auth.module';
 import { KeyModule } from './key/key.module';
 import { UserRepository } from './user/user.repository';
 import { UserController } from './user/user.controller';
+import {config} from 'dotenv';
+
+ 
+config()
 
 @Module({
   imports: [  
@@ -18,7 +22,7 @@ import { UserController } from './user/user.controller';
     AuthModule,
     KeyModule
   ],
-  controllers: [UserController],// , AuthController, 
-  providers: [UserRepository],//KeyService, AuthService, , JwtStrategy
+  controllers: [UserController],
+  providers: [UserRepository],
 })
 export class AppModule {}

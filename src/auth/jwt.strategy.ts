@@ -8,11 +8,21 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: process.env.JWT_SECRET || 'your-secret-here',
+      secretOrKey: process.env.JWT_SECRET || 'your-secret-here'
     });
   }
 
   async validate(payload: any) {
-    return { id: payload.id, email: payload.email };
+    
+    if (!payload?.email || !payload?.id) {
+      throw new Error('Неверные данные в токене');
+    }
+
+    console.log('🧾 Payload из токена:', payload);
+    return {
+      id: Number(payload.id),
+      email: payload.email,
+      role: payload.role || 'user'
+    };
   }
 }
