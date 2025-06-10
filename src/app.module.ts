@@ -11,7 +11,7 @@ import {config} from 'dotenv';
 config()
 
 @Module({
-  imports: [  
+  imports: [ 
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'secure.db',
