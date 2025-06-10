@@ -33,7 +33,7 @@ export class AuthController {
       console.error('Ошибка регистрации:', e.message);
 
       // Если это ошибка валидации (например, пользователь уже существует)
-      if (e.message.includes('уже существует')) {
+      if (e.message.includes('Пользователь уже существует')) {
         throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
       }
       
