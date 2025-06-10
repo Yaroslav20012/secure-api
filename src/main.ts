@@ -18,11 +18,11 @@ async function bootstrap() {
 
   app.enableCors({
     origin: 'https://secure-angular-app.onrender.com',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type'],
   });
   
-
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
