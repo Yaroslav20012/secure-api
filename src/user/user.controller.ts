@@ -11,8 +11,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('all')
   async getAllUsers(@Req() req: any) {
-    console.log('🔐 req.user:', req.user); // ❗ Этот лог должен быть
-    const users = await this.userRepository.getAllUsers(); // ✅ Работает с Repository
+    console.log('🔐 req.user:', req.user);
+    const users = await this.userRepository.getAllUsers();
     return users;
   }
 

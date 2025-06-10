@@ -1,25 +1,27 @@
-import { Controller, Post, Body, Res, Request } from '@nestjs/common';
+import { Controller, Post, Body, Res, Request, BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import * as jwt from 'jsonwebtoken';
 import { SanitizerService } from '../utils/sanitizer.service'; // Импортируем SanitizerService
+import { UserRepository } from 'src/user/user.repository';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly sanitizerService: SanitizerService // Инжектируем SanitizerService
+    private readonly sanitizerService: SanitizerService// Инжектируем SanitizerService
   ) {}
 
   @Post('register')
   async register(@Body() dto: { email: string; password: string }) {
-    try {
+    try {      
+      
       // Очищаем входные данные
       const sanitizedEmail = this.sanitizerService.sanitize(dto.email);
       const sanitizedPassword = this.sanitizerService.sanitize(dto.password);
 
       const decryptedEmail = this.authService.decryptWithPrivateKey(sanitizedEmail);
-      const decryptedPassword = this.authService.decryptWithPrivateKey(sanitizedPassword);
+      const decryptedPassword = this.authService.decryptWithPrivateKey(sanitizedPassword);      
 
       if (!decryptedEmail || !decryptedPassword) {
         throw new Error('Не удалось расшифровать данные');
@@ -29,7 +31,13 @@ export class AuthController {
       return { message: 'Регистрация успешна' };
     } catch (e) {
       console.error('Ошибка регистрации:', e.message);
-      throw new Error('Не удалось зарегистрировать пользователя');
+
+      // Если это ошибка валидации (например, пользователь уже существует)
+      if (e.message.includes('уже существует')) {
+        throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+      }
+      
+      throw new HttpException('Не удалось зарегистрировать пользователя', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -64,7 +72,7 @@ export class AuthController {
       throw new Error('Не удалось расшифровать данные');
     }
 
-    const user = await this.authService.validateUser (decryptedEmail, decryptedPassword);
+    const user = await this.authService.validateUser(decryptedEmail, decryptedPassword);
     const tokens = this.authService.generateTokens(user);
 
     console.log('🔑 Сгенерированный токен:', tokens.accessToken);

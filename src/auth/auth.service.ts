@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -83,13 +83,10 @@ export class AuthService {
   }
 
 
-
   async register( email: string, password: string) {
-
-
     const existingUser = await this.userRepo.findOneBy({ email });
     if (existingUser) {
-      throw new Error('Пользователь уже существует');
+      throw new BadRequestException('Некорректные данные');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -100,9 +97,8 @@ export class AuthService {
 
     await this.userRepo.save(newUser);
     return this.generateTokens(newUser);
- 
-  }
 
+  }
 
 
   async validateUserByToken(decoded: any): Promise<any> {

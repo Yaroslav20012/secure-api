@@ -14,11 +14,6 @@ export class UserRepository {
     return await this.userRepo.findOneBy({ email });
   }
 
-  // async saveUser(user: Partial<User>): Promise<User> {
-  //   const newUser = this.userRepo.create(user);
-  //   return await this.userRepo.save(newUser);
-  // }
-
   async getAllUsers(): Promise<User[]> {
     return await this.userRepo.find({});
   }
