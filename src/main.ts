@@ -22,6 +22,23 @@ async function bootstrap() {
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type'],
   });
+
+  app.use((req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; " +
+        "script-src 'self' https://cdnjs.cloudflare.com;  " +
+        "style-src 'self' 'unsafe-inline'; " +
+        "img-src 'self' data:; " +
+        "connect-src 'self'; " +
+        "font-src 'self'; " +
+        "object-src 'none'; " +
+        "frame-ancestors 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self';"
+    );
+    next();
+  });
   
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
