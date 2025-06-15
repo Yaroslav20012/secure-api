@@ -11,13 +11,16 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
 
-  console.log('🌐 CORS настроен на:', 'https://secure-angular-app.onrender.com');
+  console.log('🌐 CORS настроен на:', 'http://spitefully-adjusted-jabiru.cloudpub.ru:4200');
   console.log('📦 API Prefix:', 'api');
   console.log('📁 NODE_ENV:', process.env.NODE_ENV);
 
 
   app.enableCors({
-    origin: 'https://secure-angular-app.onrender.com',
+    origin: [
+      'http://spitefully-adjusted-jabiru.cloudpub.ru:4200',
+      'https://spitefully-adjusted-jabiru.cloudpub.ru' 
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Authorization', 'Content-Type'],
